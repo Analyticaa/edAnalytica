@@ -1,0 +1,84 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load quiz %}
+
+{% block content %}
+<div class="header-top-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div style="padding:2px 0px; font-size: 24px;color: #ffffff;text-align:center;" >
+                        {{quiz.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div class="container">
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        
+        <div class="form-element-list mg-t-30">
+            {% for submission in submissions %}
+            <div class="basic-tb-hd">
+                <p>{{ forloop.counter0|add:questions.start_index }}. {{ submission.question.question }}</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    {% for option in submission.question.options %}
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="fm-checkbox form-elet-mg">
+                                    {% if option.is_answer %}
+                                        <label style='color: green;'>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
+                                    {% elif submission.answer == option.id and not submission.is_correct %}
+                                        <label style='color: red;'>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
+                                    {% else %}
+                                        <label>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="row">
+                            <button name="submit-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="">View Steps</button>
+                        </div>
+                    </br>
+                        <div class="row">
+                            <button name="submit-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="">View Video</button>
+                        </div>
+                    </div>
+            </div>
+            <hr/>
+            {% endfor %}
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align:center">
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+                       
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align:right">
+                    {% if questions.has_previous %}
+                    &nbsp;<button name="pagination-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="go_page({{quiz.id}}, {{questions.previous_page_number}})"><i class="notika-icon notika-left-arrow"></i></button>
+                    {% endif %}
+                    {{page}} of {{ questions.paginator.num_pages }}
+                    {% if questions.has_next %}
+                    &nbsp;<button name="pagination-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="go_page({{quiz.id}}, {{questions.next_page_number}})"><i class="notika-icon notika-right-arrow"></i></button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+{% block extrascripts %}
+<script src="{% static 'js/quiz-review.js' %}"></script>
+{% endblock %}

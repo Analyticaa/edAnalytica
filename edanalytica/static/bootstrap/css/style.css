@@ -1,0 +1,111 @@
+
+
+.mynav
+{
+    background:#0A2A66;
+    padding:10px;
+    border-bottom: 5px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.mynav li 
+{
+    padding: 0px 20px;
+}
+
+.search-nav
+{
+
+}
+
+.search-nav span i 
+{
+    color:white;
+    font-size: 18px;
+}
+
+.search-nav span 
+{
+    position: relative;
+    right: 22px;
+    top: 7px;
+}
+
+.input-nav
+{
+    padding:4px 5px;
+    border:None;
+    background-color: rgb(30, 59, 114);
+    width:180px;
+    position: relative;
+    top:5px;
+    left:5px;
+    color:white;
+    outline: none;
+    border-radius: 2px;
+}
+
+.input-nav:focus
+{
+    border:1px solid white;
+    
+}
+
+.input-nav::placeholder
+{
+    color:white;
+    font-size: 16px;
+}
+
+.title-text p:nth-child(1)
+{
+    color: rgba(255,255,255,0.64);
+    font-weight: 700 !important;
+    font-size: 16px !important;
+}
+
+.title-text p:nth-child(2)
+{
+    font-size: 36px;
+    font-weight: 900;
+    color:white;
+}
+
+.bg-blue
+{
+    background: #0A2A66;
+    position: relative;
+    top: -4px;
+    padding: 20px; 
+}
+
+.bg-blue1
+{
+    background: #0A2A66;
+    position: relative;
+    top: 0px;
+    padding: 20px; 
+}
+
+
+.hlo
+{
+    height: 500px;
+}
+
+.footer-text p  
+{
+    color:rgba(255,255,255,0.64);
+    font-size: 20px;
+}
+
+.footer-navl li
+{
+    list-style: none;
+    margin:10px 0;
+}
+
+.footer-navl li a
+{
+    color:white;
+    font-size: 14px;
+}

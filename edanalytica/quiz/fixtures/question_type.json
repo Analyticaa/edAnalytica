@@ -1,0 +1,9 @@
+[
+    {
+      "model": "quiz.QuestionType",
+      "pk": 1,
+      "fields": {
+        "question": "MCQ"
+      }
+    }
+  ]

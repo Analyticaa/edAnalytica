@@ -1,0 +1,10 @@
+[
+    {
+      "model": "quiz.QuestionPool",
+      "pk": 1,
+      "fields": {
+        "question": "A train running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
+        "question_type_id": 1
+      }
+    }
+  ]
