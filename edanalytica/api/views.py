@@ -49,7 +49,8 @@ class SubmissionViewset(viewsets.ModelViewSet):
         submissions = []
         for answer in answers:
             question = QuestionPool.objects.get(pk=answer['question_id'])
+            ans = int(answer['answer'])
             submissions.append(Submissions(submission=submission_meta,
-                                           question=question, answer=answer['answer'], is_correct=question.validate(answer['answer'])))
+                                           question=question, answer=ans, is_correct=question.validate(ans)))
         Submissions.objects.bulk_create(submissions)
         return Response(status=200)

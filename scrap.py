@@ -32,22 +32,36 @@ def scrap(url):
             "options": options,
             "explanation": str(explanation)
         }
-        headers = {
-            'Content-Type': "application/json",
-        }
-        res = requests.post("http://127.0.0.1:9000/api/question/", data=json.dumps(data), headers=headers)
-        print(res.status_code)
+        imgs = explanation.find_all('img')
+        for image in imgs:
+            download_file('https://indiabix.com{}'.format(image['src']))
+        # headers = {
+        #     'Content-Type': "application/json",
+        # }
+        # res = requests.post("http://127.0.0.1:9000/api/question/", data=json.dumps(data), headers=headers)
+        # print(res.status_code)
 
-    print(questions)
 
 def main():
     urls = [
         'https://www.indiabix.com/aptitude/problems-on-trains/',
-        'https://www.indiabix.com/aptitude/profit-and-loss/',
-        'https://www.indiabix.com/aptitude/calendar/'
+        # 'https://www.indiabix.com/aptitude/profit-and-loss/',
+        # 'https://www.indiabix.com/aptitude/calendar/'
     ]
     for url in urls:
         scrap(url)
+
+def download_file(url):
+    print(url)
+    local_filename = url.split('/')[-1]
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(local_filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192): 
+                if chunk: # filter out keep-alive new chunks
+                    f.write(chunk)
+                    # f.flush()
+    return local_filename
 
 if __name__ == "__main__":
     main()

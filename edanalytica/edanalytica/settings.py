@@ -129,10 +129,15 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "/static")
 
+MEDIA_URL = '/_files/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "/_files")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "_files"),
 ]
 
-LOGIN_REDIRECT_URL = '/s/quiz/2/'
+LOGIN_REDIRECT_URL = '/s/quiz/1/'
 
 LOGIN_URL = '/s/login/'
