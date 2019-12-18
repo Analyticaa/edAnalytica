@@ -133,6 +133,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-LOGIN_REDIRECT_URL = '/s/quiz/1/'
+LOGIN_REDIRECT_URL = '/s/quiz/2/'
 
 LOGIN_URL = '/s/login/'

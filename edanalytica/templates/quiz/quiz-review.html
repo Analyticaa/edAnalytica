@@ -23,8 +23,13 @@
         
         <div class="form-element-list mg-t-30">
             {% for submission in submissions %}
+            {% with qIdx=forloop.counter0|add:questions.start_index %}
             <div class="basic-tb-hd">
-                <p>{{ forloop.counter0|add:questions.start_index }}. {{ submission.question.question }}</p>
+                {% if submission.is_correct %}
+                    <p>{{qIdx}}. {{ submission.question.question }}</p>
+                {% else %}
+                    <p style="color:red;">{{ forloop.counter0|add:questions.start_index }}. {{ submission.question.question }}</p>
+                {% endif %}
             </div>
 
             <div class="row">
@@ -48,7 +53,7 @@
 
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                         <div class="row">
-                            <button name="submit-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="">View Steps</button>
+                            <button name="view-steps-btn" class="btn btn-warning warning-icon-notika waves-effect" sId='{{submission.id}}' qIdx='{{qIdx}}''>View Steps</button>
                         </div>
                     </br>
                         <div class="row">
@@ -57,6 +62,7 @@
                     </div>
             </div>
             <hr/>
+            {% endwith %}
             {% endfor %}
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align:center">
@@ -77,6 +83,20 @@
         </div>
     </div>
 </div>
+</div>
+<div class="modal fade" id="myModalone" role="dialog">
+        <div class="modal-dialog modals-default">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h2>{{question.question}}</h2>
+                    <p>{{question.explanation}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
 </div>
 {% endblock %}
 {% block extrascripts %}

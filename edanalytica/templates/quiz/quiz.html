@@ -19,7 +19,8 @@
 
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        
+        <input type="hidden" name="quizId" value="{{quiz.id}}" id="quizId">
+        {% csrf_token %}
         <div class="form-element-list mg-t-30">
             {% for question in questions %}
             <div class="basic-tb-hd">

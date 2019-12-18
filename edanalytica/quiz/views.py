@@ -56,3 +56,18 @@ class ReviewView(View):
             'submissions': submissions
         }
         return render(request, "quiz/quiz-review.html", status=200, context=context)
+
+
+class ViewStepsView(View):
+
+    def get(self, request, *args, **kwargs):
+        pk = request.GET.get('sId') or 0
+        qIdx = request.GET.get('qIdx')
+        submission = get_object_or_404(Submissions, pk=int(pk))
+
+        context = {
+            'submission': submission,
+            'qIdx': qIdx
+        }
+
+        return render(request, "quiz/view-steps.html", status=200, context=context)

@@ -1,0 +1,6 @@
+{% if submission.is_correct %}
+    <p style="color:green;">{{qIdx}}. &nbsp;&nbsp;{{ submission.question.question }}</p>
+{% else %}
+    <p style="color:red;">{{qIdx}}. &nbsp;&nbsp;{{ submission.question.question }}</p>
+{% endif %}
+<p>{{ submission.question.explanation|safe }}</p>

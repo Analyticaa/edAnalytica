@@ -36,7 +36,7 @@ class SubmissionViewset(viewsets.ModelViewSet):
         data['user'] = request.user.pk
         actual_question_ids = quiz.question_ids
         answers = data.pop('answers')
-        answered_question_ids = [ans['question_id'] for ans in answers]
+        answered_question_ids = [int(ans['question_id']) for ans in answers]
         if set(actual_question_ids) != set(answered_question_ids):
             return Response({
                 'message': 'Please answer all questions'
