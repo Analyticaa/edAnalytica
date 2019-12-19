@@ -60,12 +60,20 @@ class Quiz(BaseModel):
     def question_ids(self):
         return self.questions.values_list('id', flat=True)
 
+    @cached_property
+    def num_of_questions(self):
+        return self.questions.all().count()
+
 
 class SubmissionMeta(UUIDModel):
 
     quiz = models.ForeignKey(Quiz, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     submitted_on = models.DateTimeField(auto_now_add=True)
+
+    @cached_property
+    def num_of_errors(self):
+        return self.submissions_set.filter(is_correct=False).count()
 
     class Meta:
         pass

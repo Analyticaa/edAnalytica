@@ -32,14 +32,14 @@ def scrap(url):
             "options": options,
             "explanation": str(explanation)
         }
-        imgs = explanation.find_all('img')
-        for image in imgs:
-            download_file('https://indiabix.com{}'.format(image['src']))
-        # headers = {
-        #     'Content-Type': "application/json",
-        # }
-        # res = requests.post("http://127.0.0.1:9000/api/question/", data=json.dumps(data), headers=headers)
-        # print(res.status_code)
+        # imgs = explanation.find_all('img')
+        # for image in imgs:
+        #     download_file('https://indiabix.com{}'.format(image['src']))
+        headers = {
+            'Content-Type': "application/json",
+        }
+        res = requests.post("http://13.126.244.126:9000/api/question/", data=json.dumps(data), headers=headers)
+        print(res.status_code)
 
 
 def main():

@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from datetime import datetime
 
 from quiz.models import QuestionPool, MCQOptions, QuestionType, Quiz, SubmissionMeta, Submissions
 
@@ -21,12 +22,14 @@ class QuizDetailView(View):
         questions = quiz.questions.all()
         paginator = Paginator(questions, 2)
         questions = paginator.get_page(page)
+        test_date = datetime.now()
 
         context = {
             'quiz': quiz,
             'questions': questions,
             'page': page,
-            'paginator': paginator
+            'paginator': paginator,
+            'test_date': test_date
         }
         return render(request, "quiz/quiz.html", status=200, context=context)
 
@@ -47,13 +50,16 @@ class ReviewView(View):
             quiz=quiz, user=user).last()
         submissions = Submissions.objects.filter(
             question__in=questions, submission=submission_meta)
+        test_date = datetime.now()
 
         context = {
             'quiz': quiz,
             'questions': questions,
             'page': page,
             'paginator': paginator,
-            'submissions': submissions
+            'submissions': submissions,
+            'test_date': test_date,
+            'submission_meta': submission_meta
         }
         return render(request, "quiz/quiz-review.html", status=200, context=context)
 

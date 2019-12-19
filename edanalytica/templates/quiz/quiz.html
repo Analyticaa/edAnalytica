@@ -3,13 +3,18 @@
 {% load static %}
 
 {% block content %}
-<div class="header-top-area">
+<div class="header-top-area" style="background:#2a61a5 !important;padding:18px;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div style="padding:2px 0px; font-size: 24px;color: #ffffff;text-align:center;" >
-                        {{quiz.name}}
-                    </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <span style="padding:2px 0px; font-size: 14px;color: #ffffff;" >
+                        Test Name:&nbsp;&nbsp;{{quiz.name}}
+                    </span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align:right;">
+                    <span style="padding:2px 0px; font-size: 14px;color: #ffffff;" >
+                        Test Date:&nbsp;&nbsp;{{test_date}}
+                    </span>
                 </div>
             </div>
         </div>
