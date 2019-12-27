@@ -1,13 +1,14 @@
 function go_page(quiz_id, page_num){
+    cacheAnswer();
     document.location.href = '/s/quiz/'+quiz_id+'/?page='+page_num
 }
 
-const paginationBtn = document.querySelector('button[name=pagination-btn]');
+// const paginationBtn = document.querySelector('button[name=pagination-btn]');
 const submitBtn = document.querySelector('button[name=submit-btn]');
 
-paginationBtn.addEventListener('click', function() {
-    cacheAnswer();
-});
+// paginationBtn.addEventListener('click', function() {
+//     cacheAnswer();
+// });
 
 function cacheAnswer(){
     var qs = document.querySelectorAll("input[type='radio']:checked")
