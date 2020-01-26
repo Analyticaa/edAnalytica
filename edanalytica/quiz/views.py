@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from django.urls import reverse
 from datetime import datetime
+
 
 from quiz.models import QuestionPool, MCQOptions, QuestionType, Quiz, SubmissionMeta, Submissions
 
@@ -14,33 +16,58 @@ from quiz.models import QuestionPool, MCQOptions, QuestionType, Quiz, Submission
 class QuizDetailView(View):
 
     def get(self, request, *args, **kwargs):
-        pk = kwargs['quiz_id']
+        submission_uuid = kwargs['submission_uuid']
         # print(pk)
-        quiz = get_object_or_404(Quiz, pk=int(pk))
+        submission_meta = get_object_or_404(
+            SubmissionMeta, uuid=submission_uuid)
+        quiz = submission_meta.quiz
         # quiz = Quiz.objects.all().first()
         page = request.GET.get('page') or 1
         questions = quiz.questions.all()
         paginator = Paginator(questions, 2)
         questions = paginator.get_page(page)
         test_date = datetime.now()
-
+        started_at = datetime.strftime(
+            submission_meta.started_at, "%Y-%m-%dT%H:%M:%S%Z")
         context = {
             'quiz': quiz,
             'questions': questions,
             'page': page,
             'paginator': paginator,
-            'test_date': test_date
+            'test_date': test_date,
+            'started_at': started_at,
+            'submission_uuid': submission_uuid
         }
         return render(request, "quiz/quiz.html", status=200, context=context)
+
+
+class QuizStartView(View):
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            "quiz_id": 1
+        }
+        return render(request, "quiz/quiz-start.html", status=200, context=context)
+
+    def post(self, request, *args, **kwargs):
+        quiz_id = int(request.POST['quiz-id'])
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        user = request.user
+        submission_meta = SubmissionMeta.objects.create(
+            quiz=quiz, user=user)
+        submission_uuid = submission_meta.uuid
+        return HttpResponseRedirect(reverse('quiz-submission', kwargs={'submission_uuid': submission_uuid}))
 
 
 class ReviewView(View):
 
     def get(self, request, *args, **kwargs):
-        pk = kwargs['quiz_id']
+        submission_uuid = kwargs['submission_uuid']
         user = request.user
         # print(pk)
-        quiz = get_object_or_404(Quiz, pk=int(pk))
+        submission_meta = get_object_or_404(
+            SubmissionMeta, uuid=submission_uuid)
+        quiz = submission_meta.quiz
         page = request.GET.get('page') or 1
         questions = quiz.questions.all()
         paginator = Paginator(questions, 2)

@@ -65,11 +65,31 @@ class Quiz(BaseModel):
         return self.questions.all().count()
 
 
+class QuizSubmissionCache(UUIDModel):
+
+    pass
+
+
+
 class SubmissionMeta(UUIDModel):
 
     quiz = models.ForeignKey(Quiz, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    submitted_on = models.DateTimeField(auto_now_add=True)
+    submitted_on = models.DateTimeField(null=True)
+    started_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def is_completed(self):
+        return self.submitted_on is not None
+
+    @property
+    def time_taken(self):
+        diff = self.submitted_on - self.started_at
+        total_seconds = diff.seconds
+        hours = total_seconds//3600
+        minutes = (total_seconds%3600)//60
+        seconds = (total_seconds%3600)%60
+        return '{:02d}:{:02d}:{}'.format(hours, minutes, seconds)
 
     @cached_property
     def num_of_errors(self):

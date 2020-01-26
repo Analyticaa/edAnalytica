@@ -6,6 +6,8 @@ from quiz.models import QuestionPool, QuestionType, MCQOptions, SubmissionMeta, 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
+from datetime import datetime
+
 
 class QuestionViewset(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
@@ -31,9 +33,13 @@ class SubmissionViewset(viewsets.ModelViewSet):
     @transaction.atomic()
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
-        quiz_id = data['quiz']
-        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        submission_uuid = data.pop('submission_uuid')
+        submission_meta = get_object_or_404(
+            SubmissionMeta, uuid=submission_uuid)
+        quiz = submission_meta.quiz
+        data['quiz'] = quiz.pk
         data['user'] = request.user.pk
+        data['submitted_on'] = datetime.now()
         actual_question_ids = quiz.question_ids
         answers = data.pop('answers')
         answered_question_ids = [int(ans['question_id']) for ans in answers]
@@ -42,7 +48,7 @@ class SubmissionViewset(viewsets.ModelViewSet):
                 'message': 'Please answer all questions'
             }, status=400)
 
-        serializer = self.get_serializer(data=data)
+        serializer = self.get_serializer(submission_meta, data=data)
         serializer.is_valid(raise_exception=True)
         submission_meta = serializer.save()
 

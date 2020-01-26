@@ -1,5 +1,5 @@
 django
-mysqlclient==1.4.2.post1
+# mysqlclient==1.4.2.post1
 Pillow
 Jinja2
 djangorestframework

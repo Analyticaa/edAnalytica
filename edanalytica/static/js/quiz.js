@@ -1,6 +1,6 @@
 function go_page(quiz_id, page_num){
     cacheAnswer();
-    document.location.href = '/s/quiz/'+quiz_id+'/?page='+page_num
+    document.location.href = '?page='+page_num
 }
 
 // const paginationBtn = document.querySelector('button[name=pagination-btn]');
@@ -9,6 +9,15 @@ const submitBtn = document.querySelector('button[name=submit-btn]');
 // paginationBtn.addEventListener('click', function() {
 //     cacheAnswer();
 // });
+
+var timer = setInterval(myTimer ,1000);
+function myTimer() {
+    var startedAt = document.getElementById("started-at")  
+    var s = new Date(startedAt)
+    var d = new Date();
+    var diff = Math.abs(d, s);
+    document.getElementById("timer").innerHTML = (new Date(diff)).toLocaleTimeString();
+}
 
 function cacheAnswer(){
     var qs = document.querySelectorAll("input[type='radio']:checked")
@@ -64,9 +73,9 @@ function doSubmit(answers){
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     });
-    var quizId = $('#quizId').val();
+    var submissionUUID = $('#submission-uuid').val();
     var data = {};
-    data['quiz'] = quizId;
+    data['submission_uuid'] = submissionUUID;
     data['answers'] = answers;
     $.ajax({
         type: 'POST',
@@ -75,7 +84,7 @@ function doSubmit(answers){
         contentType: "application/json",
         success: function(resultData) {
             localStorage.setItem('quiz', {});
-            document.location.href = '/s/quiz/'+quizId+'/review/';
+            document.location.href = '/s/quiz/'+submissionUUID+'/review/';
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert(errorThrown);

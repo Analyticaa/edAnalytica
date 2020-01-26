@@ -12,10 +12,11 @@
                     </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align:right;">
-                    <span style="padding:2px 0px; font-size: 14px;color: #ffffff;" >
-                        Test Date:&nbsp;&nbsp;{{test_date}}
+                    <span id="timer" style="padding:2px 0px; font-size: 14px;color: #ffffff;" >
+                        
                     </span>
                 </div>
+                <input type="hidden" name="started-at" id="started-at" value="{{started_at}}">
             </div>
         </div>
 </div>
@@ -25,6 +26,8 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <input type="hidden" name="quizId" value="{{quiz.id}}" id="quizId">
+        <input type="hidden" name="submission-uuid" value="{{submission_uuid}}" id="submission-uuid">
+        
         {% csrf_token %}
         <div class="form-element-list mg-t-30">
             {% for question in questions %}

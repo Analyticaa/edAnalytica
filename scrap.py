@@ -38,8 +38,11 @@ def scrap(url):
         headers = {
             'Content-Type': "application/json",
         }
-        res = requests.post("http://13.126.244.126:9000/api/question/", data=json.dumps(data), headers=headers)
+        # res = requests.post("http://13.126.244.126:9000/api/question/", data=json.dumps(data), headers=headers)
+        res = requests.post("http://127.0.0.1:9000/api/question/", data=json.dumps(data), headers=headers)
+
         print(res.status_code)
+        # print(res.content)
 
 
 def main():
