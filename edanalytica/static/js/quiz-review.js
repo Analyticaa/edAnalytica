@@ -8,7 +8,7 @@ $(function(){
         var qIdx = $(this).attr('qIdx');
         // console.log(sId);
         $('.modal-body').load('/s/quiz/steps/?sId='+sId+'&qIdx='+qIdx,function(){
-            $('#myModalone').modal({show:true});
+            $('#myModalone').modal('show');
             injectIndiaBix();
         });
     });

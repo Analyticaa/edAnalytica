@@ -4,109 +4,110 @@
 {% load quiz %}
 
 {% block content %}
-<div class="header-top-area" style="background:#2a61a5 !important;padding:18px;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <span style="padding:2px 0px; font-size: 14px;color: #ffffff;" >
-                    Test Name:&nbsp;&nbsp;{{quiz.name}}
-                </span>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >
-                <span style="padding:2px 0px; font-size: 14px;color: #ffffff;" >
-                    Test Date:&nbsp;&nbsp;{{test_date}}
-                </span>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                <span style="padding:2px 0px; font-size: 14px;color: #ffffff;" >
-                    Test Status:&nbsp;&nbsp;{{submission_meta.num_of_errors}}/{{quiz.num_of_questions}} Errors
-                    <br/>
-                    Time Taken:&nbsp;&nbsp;{{submission_meta.time_taken}}
-                </span>
-            </div>
+<div class="bg-white border-bottom" >
+    <br/>
+    <div class="row mt-auto ml-5">
+        <div class="col-sm-9">
+            <h3>{{quiz.name}}</h3>
+        </div>
+        <div class="col-sm-3 text-left">
+            <p style="font-size: 14px;"><span>Test Date:&nbsp;&nbsp;{{test_date}}
+            <br/>
+            Test Status:&nbsp;&nbsp;{{submission_meta.num_of_errors}}/{{quiz.num_of_questions}} Errors
+        </span>
+            </p>
         </div>
     </div>
 </div>
 
 <div class="container">
+    <div class="row">
+      
+      <aside class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:2%">
+        <input type="hidden" name="quizId" value="{{quiz.id}}" id="quizId">
+        <input type="hidden" name="submission-uuid" value="{{submission_uuid}}" id="submission-uuid">
+        <input type="hidden" name="started-at" id="started-at" value="{{started_at}}">
 
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        
-        <div class="form-element-list mg-t-30">
-            {% for submission in submissions %}
-            {% with qIdx=forloop.counter0|add:questions.start_index %}
-            <div class="basic-tb-hd">
-                {% if submission.is_correct %}
-                    <p>{{qIdx}}. {{ submission.question.question }}</p>
-                {% else %}
-                    <p style="color:red;">{{ forloop.counter0|add:questions.start_index }}. {{ submission.question.question }}</p>
-                {% endif %}
-            </div>
+        {% csrf_token %}
+        <div class="card">
+            <article class="card-body">
+                {% for submission in submissions %}
+                {% with qIdx=forloop.counter0|add:questions.start_index %}
 
-            <div class="row">
+                <div class="col-sm-12">
+                    {% if submission.is_correct %}
+                        <p>{{qIdx}}. {{ submission.question.question }}</p>
+                    {% else %}
+                        <p style="color:red;">{{ forloop.counter0|add:questions.start_index }}. {{ submission.question.question }}</p>
+                    {% endif %}
+                </div>
+                <div class="row ml-2">
                 <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                    {% for option in submission.question.options %}
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="fm-checkbox form-elet-mg">
-                                    {% if option.is_answer %}
-                                        <label style='color: green;'>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
-                                    {% elif submission.answer == option.id and not submission.is_correct %}
-                                        <label style='color: red;'>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
-                                    {% else %}
-                                        <label>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                        <div class="row">
-                            <button name="view-steps-btn" class="btn btn-warning warning-icon-notika waves-effect" sId='{{submission.id}}' qIdx='{{qIdx}}''>View Steps</button>
-                        </div>
-                    </br>
-                        <div class="row">
-                            <button name="submit-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="">View Video</button>
-                        </div>
+                {% for option in submission.question.options %}
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        {% if option.is_answer %}
+                            <label style='color: green;'>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
+                        {% elif submission.answer == option.id and not submission.is_correct %}
+                            <label style='color: red;'>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
+                        {% else %}
+                            <label>&nbsp;&nbsp;{{forloop.counter|to_alphabet}}.&nbsp;{{ option.option }}</label>
+                        {% endif %}
                     </div>
+                </div>
+                {% endfor %}
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="row">
+                        <button name="view-steps-btn" class="btn btn-warning warning-icon-notika waves-effect" sId='{{submission.id}}' qIdx='{{qIdx}}'>View Steps</button>
+                    </div>
+                </br>
+                    <div class="row">
+                        <button name="view-video-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="">View Video</button>
+                    </div>
+                </div>
             </div>
-            <hr/>
-            {% endwith %}
-            {% endfor %}
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align:center">
+
+                <hr/>
+                {% endwith %}
+                {% endfor %}
+                <div class="row">
+                    <div class="col-sm-4">
+                    </div>
+                    <div class="col-sm-4 text-center" >
+                        {% if not questions.has_next %}
+                        <button name="submit-btn" class="btn btn-primary" onclick="">Submit</button>
+                        {% endif %}
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-                       
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align:right">
-                    {% if questions.has_previous %}
-                    &nbsp;<button name="pagination-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="go_page({{quiz.id}}, {{questions.previous_page_number}})"><i class="notika-icon notika-left-arrow"></i></button>
+                    <div class="col-sm-4 text-right">
+                        {% if questions.has_previous %}
+                    &nbsp;<button name="pagination-btn" class="btn btn-secondary" onclick="go_page({{quiz.id}}, {{questions.previous_page_number}})">Prev</button>
                     {% endif %}
                     {{page}} of {{ questions.paginator.num_pages }}
                     {% if questions.has_next %}
-                    &nbsp;<button name="pagination-btn" class="btn btn-warning warning-icon-notika waves-effect" onclick="go_page({{quiz.id}}, {{questions.next_page_number}})"><i class="notika-icon notika-right-arrow"></i></button>
+                        &nbsp;<button name="pagination-btn" class="btn btn-secondary" onclick="go_page({{quiz.id}}, {{questions.next_page_number}})">Next</button>
                     {% endif %}
+                    </div>
                 </div>
+            </article>
+
+        </div> <!-- card.// -->
+  
+      </aside> <!-- col.// -->
+    </div> <!-- row.// -->
+  </div> 
+
+<div class="modal fade" id="myModalone" role="dialog">
+    <div class="modal-dialog modals-default">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <hr/>
+            <div class="modal-footer" style="text-align:center;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-</div>
-</div>
-<div class="modal fade" id="myModalone" role="dialog">
-        <div class="modal-dialog modals-default">
-            <div class="modal-content">
-                <div class="modal-body">
-                </div>
-                <hr/>
-                <div class="modal-footer" style="text-align:center;">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
 </div>
 {% endblock %}
 {% block extrascripts %}

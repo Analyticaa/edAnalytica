@@ -44,10 +44,17 @@ class QuizDetailView(View):
 class QuizStartView(View):
 
     def get(self, request, *args, **kwargs):
-        context = {
-            "quiz_id": 1
-        }
-        return render(request, "quiz/quiz-start.html", status=200, context=context)
+        # context = {
+        #     "quiz_id": 1
+        # }
+        # return render(request, "quiz/quiz-start.html", status=200, context=context)
+        quiz_id = 1
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        user = request.user
+        submission_meta = SubmissionMeta.objects.create(
+            quiz=quiz, user=user)
+        submission_uuid = submission_meta.uuid
+        return HttpResponseRedirect(reverse('quiz-submission', kwargs={'submission_uuid': submission_uuid}))
 
     def post(self, request, *args, **kwargs):
         quiz_id = int(request.POST['quiz-id'])
