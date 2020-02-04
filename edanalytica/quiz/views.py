@@ -20,6 +20,8 @@ class QuizDetailView(View):
         # print(pk)
         submission_meta = get_object_or_404(
             SubmissionMeta, uuid=submission_uuid)
+        if submission_meta.is_completed:
+            return HttpResponse(status=404)
         quiz = submission_meta.quiz
         # quiz = Quiz.objects.all().first()
         page = request.GET.get('page') or 1
@@ -29,6 +31,7 @@ class QuizDetailView(View):
         test_date = datetime.now()
         started_at = datetime.strftime(
             submission_meta.started_at, "%Y-%m-%dT%H:%M:%S%Z")
+
         context = {
             'quiz': quiz,
             'questions': questions,

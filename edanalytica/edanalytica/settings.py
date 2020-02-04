@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'org.middleware.OrgMiddleware'
 ]
 
 ROOT_URLCONF = 'edanalytica.urls'
@@ -141,3 +142,5 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/s/quiz/start/'
 
 LOGIN_URL = '/s/login/'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

@@ -17,7 +17,11 @@
     <header>
       <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">
-          EdAnalytica
+          {% if request.org %}
+            <img src="/_files/{{request.org.logo}}" style="max-height: 40px;"/>
+          {% else %}
+              EdAnalytica
+          {% endif %}
           </a>
       </nav>
     </header>
@@ -29,7 +33,13 @@
     <div class="navbar navbasr-default navbar-fixed-bottom bg-white" style="margin-top:5%">
         <div class="container">
             <div class="row">
-                <p class="navbar-text pull-left "><a href="#">© 2019-2020 EdAnalytica Today All Rights Reserved</a></p>
+                <p class="navbar-text pull-left ">
+                  {% if request.org %}
+                    <a href="#">{{request.org.footer}}</a>
+                  {% else %}
+                    <a href="#">© 2019-2020 EdAnalytica Today All Rights Reserved</a>
+                  {% endif %}
+                </p>
             </div>
         </div>
     </div>
