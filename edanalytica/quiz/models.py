@@ -3,6 +3,7 @@ from django.utils.functional import cached_property
 from django.contrib.auth.models import User
 
 from common.models import BaseModel, UUIDModel
+from org.models import Org
 
 
 class QuestionType(UUIDModel):
@@ -47,11 +48,13 @@ class MCQOptions(BaseModel):
 
 class Quiz(BaseModel):
 
+    org = models.ForeignKey(Org, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=250, null=False, blank=False)
     description = models.TextField(blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=False)
     questions = models.ManyToManyField(QuestionPool)
+    duration = models.IntegerField(default=60)
 
     class Meta:
         pass

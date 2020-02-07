@@ -7,6 +7,8 @@ from django.contrib.auth import logout
 from django.conf import settings
 
 def index(request, *args, **kwargs):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
     return HttpResponseRedirect('/s/login/')
 
 

@@ -7,7 +7,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 from quiz.models import QuestionPool, MCQOptions, QuestionType, Quiz, SubmissionMeta, Submissions
@@ -29,8 +29,9 @@ class QuizDetailView(View):
         paginator = Paginator(questions, 2)
         questions = paginator.get_page(page)
         test_date = datetime.now()
-        started_at = datetime.strftime(
-            submission_meta.started_at, "%Y-%m-%dT%H:%M:%S%Z")
+        started_at = submission_meta.started_at + \
+            timedelta(minutes=quiz.duration)
+        started_at = datetime.strftime(started_at, "%Y-%m-%dT%H:%M:%SZ")
 
         context = {
             'quiz': quiz,
@@ -41,6 +42,8 @@ class QuizDetailView(View):
             'started_at': started_at,
             'submission_uuid': submission_uuid
         }
+        if request.is_ajax():
+            return render(request, "quiz/quiz-body.html", status=200, context=context)
         return render(request, "quiz/quiz.html", status=200, context=context)
 
 
@@ -52,7 +55,8 @@ class QuizStartView(View):
         # }
         # return render(request, "quiz/quiz-start.html", status=200, context=context)
         quiz_id = 1
-        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        quiz = get_object_or_404(Quiz, pk=quiz_id, org=request.org)
+
         user = request.user
         submission_meta = SubmissionMeta.objects.create(
             quiz=quiz, user=user)

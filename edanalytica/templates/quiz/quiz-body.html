@@ -1,21 +1,4 @@
 
-{% extends "base.html" %}
-{% load static %}
-
-{% block content %}
-<div class="bg-white border-bottom" >
-    <br/>
-    <div class="row mt-auto ml-5">
-        <div class="col-sm-6">
-            <h3>{{quiz.name}}</h3>
-        </div>
-        <div class="col-sm-5 text-right">
-            <h3><span id="timer"></span></h3>
-        </div>
-    </div>
-</div>
-
-<div class="container" id="quiz-body">
     <div class="row">
       
       <aside class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:2%">
@@ -64,9 +47,3 @@
   
       </aside> <!-- col.// -->
     </div> <!-- row.// -->
-  </div> 
-
-{% endblock %}
-{% block extrascripts %}
-<script src="{% static 'js/quiz.js' %}"></script>
-{% endblock %}
