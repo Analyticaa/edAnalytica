@@ -23,7 +23,12 @@ services:
     volumes:
       - "./data:/var/lib/mysql:rw"
       - "./my.conf:/etc/mysql/conf.d/config-file.cnf"
-    
+  webserver:
+    image: nginx:alpine
+    volumes:
+      - "./templates/edAnalyticaHtml:/usr/share/nginx/html"
+    ports:
+      - "9001:80"
   admin:
     image: adminer
     ports:
